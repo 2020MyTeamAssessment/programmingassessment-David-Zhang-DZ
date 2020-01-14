@@ -5,12 +5,14 @@ using UnityEngine;
 public class SkeletonMovement : MonoBehaviour
 {
     Rigidbody2D skeletonRB;
-    int timer = 151;
+    public Rigidbody2D projectilePrefab;
+    int timer;
     float speed = 3.0f;
 
     // Start is called before the first frame update
     void Start()
     {
+        int timer = 1;
         skeletonRB = gameObject.GetComponent<Rigidbody2D>();
     }
 
@@ -25,12 +27,20 @@ public class SkeletonMovement : MonoBehaviour
         Vector2 movement = new Vector2(0f, 5.0f);
         skeletonRB.AddForce(movement, ForceMode2D.Impulse);
     }
-
+    
+    void ShootArrow()
+    {
+        Vector2 movement = new Vector2(2.0f, 0f);
+        Vector2 position = new Vector2(transform.position.x, transform.position.y);
+        Rigidbody2D projectile = Instantiate(projectilePrefab, position, Quaternion.identity);
+        projectile.velocity = movement;
+    }
 
     private void FixedUpdate()
     {
         if ((timer % 150) == 1)
         {
+            ShootArrow();
             Jump();
         }
         timer++;
